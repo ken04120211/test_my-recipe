@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Recipe } from '../types';
+import { Recipe } from 'types';
 import * as echarts from 'echarts';
 
 interface Props {

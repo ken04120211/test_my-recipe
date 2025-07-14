@@ -1,6 +1,6 @@
 import React from 'react';
 import { Recipe } from '../types';
-import DetailedRecipeCard from './DetailedRecipeCard.tsx';
+import DetailedRecipeCard from './DetailedRecipeCard';
 
 interface Props {
   recipe: Recipe | null;

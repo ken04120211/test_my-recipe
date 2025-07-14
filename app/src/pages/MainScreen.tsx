@@ -1,7 +1,9 @@
 import React from 'react';
-import { Recipe, InventoryItem } from '../types';
-import RecipeCard from '../components/RecipeCard.tsx';
-import DetailedRecipeCard from '../components/DetailedRecipeCard.tsx';
+import { Recipe, InventoryItem } from 'types';
+import RecipeCard from 'components/RecipeCard';
+import DetailedRecipeCard from 'components/DetailedRecipeCard';
+
+
 
 interface Props {
   user: {
@@ -35,21 +37,26 @@ const MainScreen: React.FC<Props> = ({
       <header className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <div className="flex items-center cursor-pointer" onClick={() => onChangeTab('home')}>
+            <img src="/topIcon.png" alt="Logo" className="w-6 h-6 mr-2 object-contain" />
             <i className="fa fa-cutlery text-red-500 text-2xl mr-2" />
             <h1 className="text-xl font-bold text-gray-800">マイレシピ</h1>
           </div>
-          <div className="flex items-center">
+          {/* ユーザー */}
+          <div 
+            id="user-dropdown-trigger"
+            className="flex items-center cursor-pointer"
+          >
             <img src={user.avatar} alt="User" className="w-8 h-8 rounded-full mr-2" />
             <span className="text-sm font-medium">{user.name}</span>
           </div>
         </div>
         <div className="container mx-auto px-4 border-t">
-          <div className="flex overflow-x-auto py-2">
+          <div className="flex space-x-6 overflow-x-auto py-2">
             {['home', 'recommend', 'favorites', 'history', 'kitchen'].map((tab) => (
               <button
                 key={tab}
-                className={`px-4 py-2 font-medium whitespace-nowrap ${
-                  activeTab === tab ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500'
+                className={`relative pb-2 text-sm font-medium transition-colors duration-300 focus:outline-none ${
+                  activeTab === tab ? 'text-red-600 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-red-600' : 'text-gray-500 hover:text-red-500'
                 }`}
                 onClick={() => onChangeTab(tab)}
               >
