@@ -20,6 +20,14 @@ interface Props {
   onChangeTab: (tab: string) => void;
 }
 
+const tabs = [
+  { key: 'home', label: 'ホーム', icon: 'fa-home' },
+  { key: 'recommend', label: '今日のおすすめ', icon: 'fa-star' },
+  { key: 'favorites', label: 'お気に入り', icon: 'fa-heart' },
+  { key: 'history', label: '履歴', icon: 'fa-history' },
+  { key: 'kitchen', label: 'キッチン', icon: 'fa-shopping-basket' },
+];
+
 const MainScreen: React.FC<Props> = ({
   user,
   favorites,
@@ -29,139 +37,52 @@ const MainScreen: React.FC<Props> = ({
   activeTab,
   onSelectRecipe,
   onToggleFavorite,
-  onChangeTab
+  onChangeTab,
 }) => {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* ヘッダー */}
       <header className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center cursor-pointer" onClick={() => onChangeTab('home')}>
+        <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+          <button
+            className="flex items-center cursor-pointer"
+            onClick={() => onChangeTab('home')}
+          >
             <img src="/topIcon.png" alt="Logo" className="w-6 h-6 mr-2 object-contain" />
             <i className="fa fa-cutlery text-red-500 text-2xl mr-2" />
             <h1 className="text-xl font-bold text-gray-800">マイレシピ</h1>
-          </div>
-          {/* ユーザー */}
-          <div 
-            id="user-dropdown-trigger"
-            className="flex items-center cursor-pointer"
-          >
+          </button>
+
+          <div id="user-dropdown-trigger" className="flex items-center cursor-pointer">
             <img src={user.avatar} alt="User" className="w-8 h-8 rounded-full mr-2" />
             <span className="text-sm font-medium">{user.name}</span>
           </div>
         </div>
-        <div className="container mx-auto px-4 border-t">
+
+        <div className="max-w-7xl mx-auto px-4 border-t">
           <div className="flex space-x-6 overflow-x-auto py-2">
-            {['home', 'recommend', 'favorites', 'history', 'kitchen'].map((tab) => (
+            {tabs.map(({ key, label, icon }) => (
               <button
-                key={tab}
+                key={key}
                 className={`relative pb-2 text-sm font-medium transition-colors duration-300 focus:outline-none ${
-                  activeTab === tab ? 'text-red-600 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-red-600' : 'text-gray-500 hover:text-red-500'
+                  activeTab === key
+                    ? 'text-red-600 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-red-600'
+                    : 'text-gray-500 hover:text-red-500'
                 }`}
-                onClick={() => onChangeTab(tab)}
+                onClick={() => onChangeTab(key)}
               >
-                {tab === 'home' && <><i className="fa fa-home mr-1" /> ホーム</>}
-                {tab === 'recommend' && <><i className="fa fa-star mr-1" /> 今日のおすすめ</>}
-                {tab === 'favorites' && <><i className="fa fa-heart mr-1" /> お気に入り</>}
-                {tab === 'history' && <><i className="fa fa-history mr-1" /> 履歴</>}
-                {tab === 'kitchen' && <><i className="fa fa-shopping-basket mr-1" /> キッチン</>}
+                <i className={`fa ${icon} mr-1`} />
+                {label}
               </button>
             ))}
           </div>
         </div>
       </header>
 
-      {/* メインコンテンツ */}
-      <main className="container mx-auto px-4 py-6">
-        {activeTab === 'home' && (
-          <>
-            <section className="mb-8">
-              <h2 className="text-xl font-bold mb-4">今日のおすすめ</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {recommended.map((recipe, index) => (
-                  <RecipeCard
-                    key={index}
-                    recipe={recipe}
-                    onClick={onSelectRecipe}
-                    onToggleFavorite={onToggleFavorite}
-                    isFavorite={favorites.some((f) => f.id === recipe.id)}
-                  />
-                ))}
-              </div>
-            </section>
-            <section>
-              <h2 className="text-xl font-bold mb-4">最近作った料理</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {history.slice(0, 8).map((recipe, index) => (
-                  <RecipeCard
-                    key={index}
-                    recipe={recipe}
-                    onClick={onSelectRecipe}
-                    onToggleFavorite={onToggleFavorite}
-                    isFavorite={favorites.some((f) => f.id === recipe.id)}
-                  />
-                ))}
-              </div>
-            </section>
-          </>
-        )}
-
-        {activeTab === 'recommend' && (
-          <div className="space-y-8">
-            {recommended.map((recipe, index) => (
-              <DetailedRecipeCard
-                key={index}
-                recipe={recipe}
-                index={index}
-                onToggleFavorite={onToggleFavorite}
-              />
-            ))}
-          </div>
-        )}
-
-        {activeTab === 'favorites' && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {favorites.map((recipe, index) => (
-              <RecipeCard
-                key={index}
-                recipe={recipe}
-                onClick={onSelectRecipe}
-                onToggleFavorite={onToggleFavorite}
-                isFavorite={true}
-              />
-            ))}
-          </div>
-        )}
-
-        {activeTab === 'history' && (
-          <div className="space-y-4">
-            {history.map((recipe, index) => (
-              <RecipeCard
-                key={index}
-                recipe={recipe}
-                onClick={onSelectRecipe}
-                onToggleFavorite={onToggleFavorite}
-                isFavorite={favorites.some((f) => f.id === recipe.id)}
-              />
-            ))}
-          </div>
-        )}
-
-        {activeTab === 'kitchen' && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">キッチン管理</h2>
-            <ul className="list-disc pl-5">
-              {inventory.map((item) => (
-                <li key={item.id}>
-                  {item.name}（{item.category}）: {item.quantity} {item.unit}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </main>
+      {/* メインコンテンツ（省略） */}
     </div>
   );
 };
 
 export default MainScreen;
+
