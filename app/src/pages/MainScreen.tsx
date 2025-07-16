@@ -60,18 +60,19 @@ const MainScreen: React.FC<Props> = ({
         </div>
 
         <div className="max-w-7xl mx-auto px-4 border-t">
-          <div className="flex space-x-6 overflow-x-auto py-2">
+          <div className="flex space-x-2 overflow-x-auto py-2">
             {tabs.map(({ key, label, icon }) => (
               <button
                 key={key}
-                className={`relative pb-2 text-sm font-medium transition-colors duration-300 focus:outline-none ${
-                  activeTab === key
-                    ? 'text-red-600 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-red-600'
-                    : 'text-gray-500 hover:text-red-500'
-                }`}
                 onClick={() => onChangeTab(key)}
+                className={`flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
+                  ${
+                    activeTab === key
+                      ? 'bg-red-100 text-red-600 shadow-sm'
+                      : 'text-gray-500 hover:bg-gray-100'
+                  }`}
               >
-                <i className={`fa ${icon} mr-1`} />
+                <i className={`fa ${icon} mr-2`} />
                 {label}
               </button>
             ))}
